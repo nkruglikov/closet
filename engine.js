@@ -59,22 +59,24 @@ function PolygonYZ(a, size_y, size_z, fill_style) {
 }
 
 // Graphical engine
-function Engine(ctx) {
+function Engine(ctx, scale) {
+    // public properties
+    this.ctx = ctx;
+    this.scale = scale || 10;
+
     // private variables
     var width  = ctx.canvas.clientWidth,
         height = ctx.canvas.clientHeight;
     var coeff = Math.sqrt(2) / 4;
-    var scale = 10;
+    var self = this;
 
-    // private methods
-    function projection(point) {
-        var x = scale * (point.x + coeff * point.z);
-        var y = height - scale * (point.y + coeff * point.z);
-        return { x: x, y: y };
+    // privileged factory methods
+    this.PointProjection = function (point) {
+        this.x = self.scale * (point.x + coeff * point.z);
+        this.y = height - self.scale * (point.y + coeff * point.z);
     }
 
-    // privileged methods
-    this.draw = function (polygon) {
+    this.PolygonProjection = function (polygon) {
         var a = polygon.pointA, b,
             c = polygon.pointB, d;
         if (polygon instanceof PolygonXY) {
@@ -89,21 +91,24 @@ function Engine(ctx) {
             b = new Point(a.x, c.y, a.z);
             d = new Point(a.x, a.y, c.z);
         }
-
-        var pa = projection(a), pb = projection(b),
-            pc = projection(c), pd = projection(d);
-
-        ctx.beginPath();
-        ctx.fillStyle = polygon.fillStyle;
-        ctx.moveTo(pa.x, pa.y);
-        ctx.lineTo(pb.x, pb.y);
-        ctx.lineTo(pc.x, pc.y);
-        ctx.lineTo(pd.x, pd.y);
-        ctx.lineTo(pa.x, pa.y);
-        ctx.fill();
-        ctx.stroke();
+        this.points = [new self.PointProjection(a),
+                       new self.PointProjection(b),
+                       new self.PointProjection(c),
+                       new self.PointProjection(d)];
     }
+}
 
-    // public properties
-    this.ctx = ctx;
+// Public methods
+Engine.prototype.draw = function (polygon) {
+    var prj = new this.PolygonProjection(polygon);
+    var point = prj.points[prj.points.length - 1];
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = polygon.fillStyle;
+
+    this.ctx.moveTo(point.x, point.y);
+    for (var i = 0; i < prj.points.length; i++)
+        this.ctx.lineTo(prj.points[i].x, prj.points[i].y);
+    this.ctx.fill();
+    this.ctx.stroke();
 }
