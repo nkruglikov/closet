@@ -5,30 +5,34 @@ function Point(x, y, z) {
     this.z = z;
 }
 
-function Polygon(a, b) {
+function Polygon(a, b, fill_style, fill_style) {
     this.pointA = a;
     this.pointB = b;
+    this.fillStyle = fill_style;
 }
 
 PolygonXY.prototype = new Polygon();
 PolygonXY.prototype.constructor = PolygonXY;
-function PolygonXY(a, size_x, size_y) {
+function PolygonXY(a, size_x, size_y, fill_style) {
     this.pointA = a;
     this.pointB = new Point(a.x + size_x, a.y + size_y, a.z);
+    this.fillStyle = fill_style;
 }
 
 PolygonXZ.prototype = new Polygon();
 PolygonXZ.prototype.constructor = PolygonXZ;
-function PolygonXZ(a, size_x, size_z) {
+function PolygonXZ(a, size_x, size_z, fill_style) {
     this.pointA = a;
     this.pointB = new Point(a.x + size_x, a.y, a.z + size_z);
+    this.fillStyle = fill_style;
 }
 
 PolygonYZ.prototype = new Polygon();
 PolygonYZ.prototype.constructor = PolygonYZ;
-function PolygonYZ(a, size_y, size_z) {
+function PolygonYZ(a, size_y, size_z, fill_style) {
     this.pointA = a;
     this.pointB = new Point(a.x, a.y + size_y, a.z + size_z);
+    this.fillStyle = fill_style;
 }
 
 // Graphical engine
@@ -67,11 +71,13 @@ function Engine(ctx) {
             pc = projection(c), pd = projection(d);
 
         ctx.beginPath();
+        ctx.fillStyle = polygon.fillStyle;
         ctx.moveTo(pa.x, pa.y);
         ctx.lineTo(pb.x, pb.y);
         ctx.lineTo(pc.x, pc.y);
         ctx.lineTo(pd.x, pd.y);
         ctx.lineTo(pa.x, pa.y);
+        ctx.fill();
         ctx.stroke();
     }
 
