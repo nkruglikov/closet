@@ -5,7 +5,7 @@ function Point(x, y, z) {
     this.z = z;
 }
 
-function Polygon(a, b, fill_style, fill_style) {
+function Polygon(a, b, fill_style) {
     this.pointA = a;
     this.pointB = b;
     this.fillStyle = fill_style;
