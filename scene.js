@@ -50,6 +50,11 @@ Scene.prototype.redraw = function() {
             var y1 = p2.maxY() - p2.minY();
             return x0 >= 0 || z2 <= 0 || y0 >= y1 ? 1 : -1;
         }
+        // Different types in another order
+        else if (p2 instanceof PolygonXY && p1 instanceof PolygonYZ ||
+                 p2 instanceof PolygonXY && p1 instanceof PolygonXZ ||
+                 p2 instanceof PolygonXZ && p1 instanceof PolygonYZ)
+            return polygonComparator(p2, p1);
     }
 
     console.log(polygons);
