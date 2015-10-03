@@ -26,6 +26,13 @@ $(document).ready(function() {
     pYZ2 = new PolygonYZ(new Point(22, 1, 0), 5, 5);
     pYZ3 = new PolygonYZ(new Point(21, 1, 0), 5, 5);
     scene.models.push(pYZ1, pYZ2, pYZ3);
+    pXY4 = new PolygonXY(new Point(30, 1, 0), 5, 5, "yellow");
+    pXZ4 = new PolygonXZ(new Point(30, 1, 0), 5, 5, "lightgreen");
+    pYZ4 = new PolygonYZ(new Point(30, 1, 0), 5, 5, "blue");
+    pXY5 = new PolygonXY(new Point(30, 1, 5), 5, 5, "orange");
+    pXZ5 = new PolygonXZ(new Point(30, 6, 0), 5, 5, "green");
+    pYZ5 = new PolygonYZ(new Point(35, 1, 0), 5, 5, "lightblue");
+    scene.models.push(pXY4, pXZ4, pYZ4, pXY5, pXZ5, pYZ5);
     scene.redraw();
 
 });
