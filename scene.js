@@ -54,10 +54,9 @@ Scene.prototype.redraw = function() {
         else if (p2 instanceof PolygonXY && p1 instanceof PolygonYZ ||
                  p2 instanceof PolygonXY && p1 instanceof PolygonXZ ||
                  p2 instanceof PolygonXZ && p1 instanceof PolygonYZ)
-            return polygonComparator(p2, p1);
+            return -polygonComparator(p2, p1);
     }
 
-    console.log(polygons);
     polygons.sort(polygonComparator);
 
     for (var i = 0; i < polygons.length; i++) {
