@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var canvas = $("#canvas")[0];
     var ctx = canvas.getContext("2d");
-    var engine = new Engine(ctx, 10);
+    var engine = new Engine(ctx, 1);
 
 //  var pA = new Point(10, 10, 10),
 //      pB = new Point(20, 20, 20),
@@ -33,19 +33,22 @@ $(document).ready(function() {
 //  var pXZ5 = new PolygonXZ(new Point(30, 6, 0), 5, 5, "lightgreen");
 //  var pYZ5 = new PolygonYZ(new Point(35, 1, 0), 5, 5, "lightblue");
 //  scene.models.push(pXY4, pXZ4, pYZ4, pXY5, pXZ5, pYZ5);
-    console.log("Creating block1");
-    var block1 = new Block(new Point(30, 20, 0), 10, 5, 1, "brown");
-    var block2 = new Block(new Point(30, 20, 1), 1, 5, 5, "brown");
-    var block3 = new Block(new Point(39, 20, 1), 1, 5, 5, "brown");
-    var block4 = new Block(new Point(30, 20, 6), 10, 5, 1, "brown");
-    scene.models.push(block1, block2, block3, block4);
-    var clr = "#a0522d", txr = "#8b4513", t = Log.thickness;
-    var top_log = new LogXZ(new Point(10, 20, 0), 10, 10, clr, txr);
-    var bottom_log = new LogXZ(new Point(10, 10, 0), 10, 10, clr, txr);
-    var left_log = new LogYZ(new Point(10 - t, 10, 0),
-            10 + t, 10, clr, txr);
-    var right_log = new LogYZ(new Point(20, 10, 0), 10 + t, 10, clr, txr);
-    scene.models.push(top_log, bottom_log, left_log, right_log);
+//  var block1 = new Block(new Point(30, 20, 0), 10, 5, 1, "brown");
+//  var block2 = new Block(new Point(30, 20, 1), 1, 5, 5, "brown");
+//  var block3 = new Block(new Point(39, 20, 1), 1, 5, 5, "brown");
+//  var block4 = new Block(new Point(30, 20, 6), 10, 5, 1, "brown");
+//  scene.models.push(block1, block2, block3, block4);
+//  var clr = "#a0522d", txr = "#8b4513", t = Log.thickness;
+//  var top_log = new LogXZ(new Point(10, 20, 0), 10, 10, clr, txr);
+//  var bottom_log = new LogXZ(new Point(10, 10, 0), 10, 10, clr, txr);
+//  var left_log = new LogYZ(new Point(10 - t, 10, 0),
+//          10 + t, 10, clr, txr);
+//  var right_log = new LogYZ(new Point(20, 10, 0), 10 + t, 10, clr, txr);
+//  scene.models.push(top_log, bottom_log, left_log, right_log);
+    var clr = "#a54b00", txrXY = "#ab6218", txrXZ = txrYZ = "#bf6d1b";
+    var case1 = new Case(new Point(10, 5, 5), 100, 270, 60,
+            clr, txrXY, txrXZ, txrYZ);
+    scene.models.push(case1);
     scene.redraw();
 
 });
