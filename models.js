@@ -165,29 +165,56 @@ Section.prototype.constructor = Section;
 function Section(point, width, height, depth,
         color, textureXY, textureXZ, textureYZ) {
     this.position = point;
+    this.width = width;
+    this.height = height;
+    this.depth = depth;
+    this.color = color;
+    this.textureXY = textureXY;
+    this.textureXZ = textureXZ;
+    this.textureYZ = textureYZ;
     this.shelves = [];
     this.drawers = [];
+}
 
-    var self = this;
+Section.prototype.normalizeShelves = function() {
+    for (var i = 0; i < this.shelves.length; i++)
+        this.shelves[i].setY(this.position.y +
+                (i + 1) * this.height / (this.shelves.length + 1));
+}
 
-    function normalizeShelves() {
-        for (var i = 0; i < self.shelves.length; i++)
-            self.shelves[i].setY(point.y + (i + 1) * height / (self.shelves.length + 1));
-    }
+Section.prototype.addShelf = function() {
+    var sh_point = new Point(this.position.x, this.position.y,
+            this.position.z);
+    var shelf = new LogXZ(sh_point, this.width, this.depth,
+            this.color, this.textureXZ);
+    this.shelves.push(shelf);
+    this.normalizeShelves();
+    this.models.push(shelf);
+}
 
-    this.addShelf = function() {
-        var sh_point = new Point(point.x, point.y, point.z);
-        var shelf = new LogXZ(sh_point, width, depth, color, textureXZ);
-        this.shelves.push(shelf);
-        normalizeShelves();
-        this.models.push(shelf);
-    }
-
-    this.removeShelf = function() {
+Section.prototype.removeShelf = function() {
+    if (this.shelves.length > 0) {
         var shelf = this.shelves.pop();
         var i = this.models.indexOf(shelf), l = this.models.length;
         this.models = this.models.slice(0, i).concat(
                 this.models.slice(i + 1, l));
-        normalizeShelves();
+        this.normalizeShelves();
     }
+}
+
+Section.prototype.setWidth = function (width) {
+    this.width = width;
+    for (var i = 0; i < this.shelves.length; i++)
+        this.shelves[i].setWidth(width);
+}
+
+Section.prototype.setHeight = function (height) {
+    this.height = height;
+    this.normalizeShelves();
+}
+
+Section.prototype.setDepth = function (depth) {
+    this.depth = depth;
+    for (var i = 0; i < this.shelves.length; i++)
+        this.shelves[i].setDepth(depth);
 }

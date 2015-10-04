@@ -28,6 +28,7 @@ $(document).ready(function() {
         var min_width = Number($(this).attr("min"));
         if (min_width <= width && width <= max_width) {
             case1.setWidth(width);
+            section1.setWidth(width);
             scene.redraw();
         }
     });
@@ -38,6 +39,7 @@ $(document).ready(function() {
         var min_height = Number($(this).attr("min"));
         if (min_height <= height && height <= max_height) {
             case1.setHeight(height);
+            section1.setHeight(height - 2 * t - th);
             scene.redraw();
         }
     });
@@ -48,7 +50,18 @@ $(document).ready(function() {
         var min_depth = Number($(this).attr("min"));
         if (min_depth <= depth & depth <= max_depth) {
             case1.setDepth(depth);
+            section1.setDepth(depth - t - 2 * th);
             scene.redraw();
         }
+    });
+
+    $("#control-add-shelf").click(function() {
+        section1.addShelf();
+        scene.redraw();
+    });
+
+    $("#control-remove-shelf").click(function() {
+        section1.removeShelf();
+        scene.redraw();
     });
 });
