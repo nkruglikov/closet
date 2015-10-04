@@ -15,10 +15,12 @@
         <canvas id="canvas" width="520" height="430"></canvas>
         <div class="control" id="dimensions">
             <p>Размеры шкафа</p>
-            <input type="number" id="control-width" min="60" max="400" value="300">
-            <input type="number" id="control-height" min="200" max="270" value="270">
-            <input type="number" id="control-depth" min="30" max="80" value="60">
-
+            <label for="control-width">Ширина</label>
+            <input type="range" id="control-width" min="60" max="400" value="300">
+            <label for="control-height">Высота</label>
+            <input type="range" id="control-height" min="200" max="270" value="270">
+            <label for="control-depth">Глубина</label>
+            <input type="range" id="control-depth" min="30" max="80" value="60">
         </div>
     </body>
 </html>
