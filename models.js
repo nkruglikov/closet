@@ -46,6 +46,19 @@ Block.prototype.setY = function (y) {
     this.setHeight(height);
 }
 
+Block.prototype.setDepth = function (depth) {
+    ( this.polygonXZ.pointB.z
+    = this.polygonYZ.pointB.z
+    = this.polygonXZ.pointA.z + depth);
+}
+
+Block.prototype.setZ = function (z) {
+    var depth = this.polygonXZ.pointB.z - this.polygonXZ.pointA.z;
+    ( this.polygonXY.pointA.z = this.polygonXY.pointB.z
+    = this.polygonXZ.pointA.z = this.polygonYZ.pointA.z = z);
+    this.setDepth(depth);
+}
+
 Log.prototype = new Block();
 Log.prototype.constructor = Log;
 function Log() {
@@ -133,4 +146,14 @@ Case.prototype.setHeight = function (height) {
     this.leftLog.setHeight(height);
     this.rightLog.setHeight(height);
     this.topLog.setY(y + height - t);
+}
+
+Case.prototype.setDepth = function (depth) {
+    var x = this.position.x, y = this.position.y, z = this.position.z;
+    var t = Log.thickness;
+    this.backLog.setZ(z + depth);
+    this.leftLog.setDepth(depth);
+    this.rightLog.setDepth(depth);
+    this.topLog.setDepth(depth);
+    this.bottomLog.setDepth(depth);
 }

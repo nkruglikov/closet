@@ -78,4 +78,18 @@ $(document).ready(function() {
             }, 20);
         }
     }, 20);
+
+    var depth = 60;
+    var id3 = setInterval(function() {
+        case1.setDepth(++depth);
+        scene.redraw();
+        if (depth >= 100) {
+            clearInterval(id3);
+            id3 = setInterval(function() {
+                case1.setDepth(--depth);
+                scene.redraw();
+                if (depth <= 60) clearInterval(id3);
+            }, 20);
+        }
+    }, 20);
 });
