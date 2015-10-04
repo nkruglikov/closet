@@ -10,6 +10,17 @@ $(document).ready(function() {
     scene.models.push(case1);
     scene.redraw();
 
+    var t = Log.thickness, th = case1.thresoldHeight;
+    var section1 = new Section(new Point(10 + t, 5 + t + th, 5 + 2 * th),
+            300, 270 - 2 * t - th, 60 - t - 2 * th,
+            clr, txrXY, txrXZ, txrYZ);
+    section1.addShelf();
+    section1.addShelf();
+    section1.addShelf();
+    section1.removeShelf();
+    scene.models.push(section1);
+    scene.redraw();
+
 
     $("#control-width").change(function() {
         var width = Number($(this).val());
