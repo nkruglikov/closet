@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var canvas = $("#canvas")[0];
     var ctx = canvas.getContext("2d");
-    var engine = new Engine(ctx, 1);
+    var engine = new Engine(ctx, 2);
 
 //  var pA = new Point(10, 10, 10),
 //      pB = new Point(20, 20, 20),
@@ -46,9 +46,23 @@ $(document).ready(function() {
 //  var right_log = new LogYZ(new Point(20, 10, 0), 10 + t, 10, clr, txr);
 //  scene.models.push(top_log, bottom_log, left_log, right_log);
     var clr = "#a54b00", txrXY = "#ab6218", txrXZ = txrYZ = "#bf6d1b";
-    var case1 = new Case(new Point(10, 5, 5), 100, 270, 60,
+    var case1 = new Case(new Point(10, 5, 5), 100, 120, 60,
             clr, txrXY, txrXZ, txrYZ);
     scene.models.push(case1);
     scene.redraw();
+
+    var width = 100;
+    var id = setInterval(function() {
+        case1.setWidth(++width);
+        scene.redraw();
+        if (width >= 180) {
+            clearInterval(id);
+            id = setInterval(function() {
+                case1.setWidth(--width);
+                scene.redraw();
+                if (width <= 100) clearInterval(id);
+            }, 20);
+        }
+    }, 20);
 
 });

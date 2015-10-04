@@ -19,12 +19,25 @@ Block.prototype.init = function (point, width, height, depth, color) {
     this.models = [this.polygonXY, this.polygonXZ, this.polygonYZ];
 }
 
+Block.prototype.setWidth = function (width) {
+    this.polygonXY.pointB.x = this.polygonXY.pointA.x + width;
+    this.polygonXZ.pointB.x = this.polygonXZ.pointA.x + width;
+    this.polygonYZ.pointA.x = this.polygonYZ.pointB.x = this.polygonXY.pointB.x;
+}
+
+Block.prototype.setX = function (x) {
+    var width = this.polygonXY.pointB.x - this.polygonXY.pointA.x;
+    this.polygonXY.pointA.x = x;
+    this.polygonXZ.pointA.x = x;
+    this.setWidth(width);
+}
+
 Log.prototype = new Block();
 Log.prototype.constructor = Log;
 function Log() {
     this.thickness = Log.thickness;
 }
-Log.thickness = 2.5;
+Log.thickness = 5;
 
 
 LogXY.prototype = new Log();
@@ -64,6 +77,9 @@ function Case(point, width, height, depth,
     textureYZ = textureYZ || color;
     var x = point.x, y = point.y, z = point.z, t = Log.thickness;
     var thresoldHeight = th = 5;
+
+    this.position = point;
+
     this.backLog     = new LogXY(new Point(x, y, z + depth),
                                  width + 2*t, height,
                                  color, textureXY);
@@ -84,5 +100,15 @@ function Case(point, width, height, depth,
                                  color, textureXY);
     this.models = [this.backLog, this.leftLog, this.rightLog,
                    this.topLog, this.bottomLog, this.thresoldLog];
+}
+
+Case.prototype.setWidth = function (width) {
+    var x = this.position.x, y = this.position.y, z = this.position.z;
+    var t = Log.thickness;
+    this.backLog.setWidth(width + 2 * t);
+    this.rightLog.setX(x + width + t);
+    this.topLog.setWidth(width);
+    this.bottomLog.setWidth(width);
+    this.thresoldLog.setWidth(width);
 }
 

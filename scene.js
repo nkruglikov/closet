@@ -4,6 +4,8 @@ function Scene(engine) {
 }
 
 Scene.prototype.redraw = function() {
+    var canvas = this.engine.ctx.canvas;
+    this.engine.ctx.clearRect(0, 0, canvas.width, canvas.height);
     var polygons = [];
     (function getPolygons(models) {
         for (var i = 0; i < models.length; i++) {
@@ -28,6 +30,5 @@ Scene.prototype.redraw = function() {
 
     for (var i = 0; i < polygons.length; i++) {
         this.engine.draw(polygons[i]);
-        console.log(polygons[i].constructor.name, polygons[i].fillStyle);
     }
 }
