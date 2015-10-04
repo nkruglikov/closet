@@ -52,17 +52,30 @@ $(document).ready(function() {
     scene.redraw();
 
     var width = 100;
-    var id = setInterval(function() {
+    var id1 = setInterval(function() {
         case1.setWidth(++width);
         scene.redraw();
         if (width >= 180) {
-            clearInterval(id);
-            id = setInterval(function() {
+            clearInterval(id1);
+            id1 = setInterval(function() {
                 case1.setWidth(--width);
                 scene.redraw();
-                if (width <= 100) clearInterval(id);
+                if (width <= 100) clearInterval(id1);
             }, 20);
         }
     }, 20);
 
+    var height = 120;
+    var id2 = setInterval(function() {
+        case1.setHeight(++height);
+        scene.redraw();
+        if (width >= 160) {
+            clearInterval(id2);
+            id2 = setInterval(function() {
+                case1.setHeight(--height);
+                scene.redraw();
+                if (height <= 120) clearInterval(id2);
+            }, 20);
+        }
+    }, 20);
 });

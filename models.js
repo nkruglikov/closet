@@ -32,6 +32,20 @@ Block.prototype.setX = function (x) {
     this.setWidth(width);
 }
 
+Block.prototype.setHeight = function (height) {
+    ( this.polygonXY.pointB.y
+    = this.polygonXZ.pointA.y = this.polygonXZ.pointB.y
+    = this.polygonYZ.pointB.y
+    = this.polygonXY.pointA.y + height);
+}
+
+Block.prototype.setY = function (y) {
+    var height = this.polygonXY.pointB.y - this.polygonXY.pointA.y;
+    this.polygonXY.pointA.y = y;
+    this.polygonYZ.pointA.y = y;
+    this.setHeight(height);
+}
+
 Log.prototype = new Block();
 Log.prototype.constructor = Log;
 function Log() {
@@ -112,3 +126,11 @@ Case.prototype.setWidth = function (width) {
     this.thresoldLog.setWidth(width);
 }
 
+Case.prototype.setHeight = function (height) {
+    var x = this.position.x, y = this.position.y, z = this.position.z;
+    var t = Log.thickness;
+    this.backLog.setHeight(height);
+    this.leftLog.setHeight(height);
+    this.rightLog.setHeight(height);
+    this.topLog.setY(y + height - t);
+}
