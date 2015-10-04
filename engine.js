@@ -67,13 +67,13 @@ function Engine(ctx, scale) {
     // private variables
     var width  = ctx.canvas.clientWidth,
         height = ctx.canvas.clientHeight;
-    var coeff = Math.sqrt(2) / 4;
+    var coeff = Math.sqrt(2) / 2;
     var self = this;
 
     // privileged factory methods
     this.PointProjection = function (point) {
         this.x = self.scale * (point.x + coeff * point.z);
-        this.y = height - self.scale * (point.y + coeff * point.z);
+        this.y = height - self.scale * (point.y + coeff / 2 * point.z);
     }
 
     this.PolygonProjection = function (polygon) {
@@ -105,6 +105,9 @@ Engine.prototype.draw = function (polygon) {
 
     this.ctx.beginPath();
     this.ctx.fillStyle = polygon.fillStyle;
+    this.ctx.lineWidth = 0.25;
+    this.ctx.lineJoin = "round";
+    this.ctx.lineCap = "round";
 
     this.ctx.moveTo(point.x, point.y);
     for (var i = 0; i < prj.points.length; i++)
