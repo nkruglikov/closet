@@ -64,7 +64,7 @@ Log.prototype.constructor = Log;
 function Log() {
     this.thickness = Log.thickness;
 }
-Log.thickness = 5;
+Log.thickness = 2.5;
 
 
 LogXY.prototype = new Log();
