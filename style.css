@@ -3,6 +3,11 @@ canvas {
 }
 
 .control {
+    vertical-align: top;
+    display: inline-block;
     width: 200px;
     border: 1px solid black;
+    margin: 3px;
+    padding: 3px;
+    height: 200px;
 }
