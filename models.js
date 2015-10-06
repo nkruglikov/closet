@@ -179,6 +179,8 @@ Object.defineProperty(Section.prototype, "depth", {
         this._depth = depth;
         for (var i = 0; i < this.shelves.length; i++)
             this.shelves[i].depth = depth;
+        for (var i = 0; i < this.drawers.length; i++)
+            this.drawers[i].depth = depth;
     },
 
     get: function () {
@@ -220,5 +222,17 @@ Object.defineProperty(Drawer.prototype, "width", {
 
     get: function () {
         return rightLog.x - leftLog.x + Log.thickness;
+    }
+});
+
+Object.defineProperty(Drawer.prototype, "depth", {
+    set: function (depth) {
+        this.leftLog.depth = depth - 2 * Log.thickness;
+        this.rightLog.depth = depth - 2 * Log.thickness;
+        this.backLog.z = this.frontLog.z + depth - Log.thickness;
+    },
+
+    get: function () {
+        return this.leftLog.depth + 2 * Log.thickness;
     }
 });
