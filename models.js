@@ -231,6 +231,8 @@ Section.prototype.setWidth = function (width) {
     this.width = width;
     for (var i = 0; i < this.shelves.length; i++)
         this.shelves[i].setWidth(width);
+    for (var i = 0; i < this.drawers.length; i++)
+        this.drawers[i].setWidth(width);
 }
 
 Section.prototype.setHeight = function (height) {
@@ -268,3 +270,9 @@ function Drawer(point, width, depth,
 }
 Drawer.height = 20;
 Drawer.gap = 5;
+
+Drawer.prototype.setWidth = function (width) {
+    this.frontLog.setWidth(width);
+    this.backLog.setWidth(width);
+    this.rightLog.setX(this.leftLog.polygonYZ.pointA.x + width - Log.thickness);
+}
