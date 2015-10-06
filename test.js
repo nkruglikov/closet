@@ -16,8 +16,6 @@ $(document).ready(function() {
             clr, txrXY, txrXZ, txrYZ);
     section1.addShelf();
     section1.addShelf();
-    section1.addShelf();
-    section1.removeShelf();
     scene.models.push(section1);
     scene.redraw();
 
@@ -29,6 +27,7 @@ $(document).ready(function() {
         if (min_width <= width && width <= max_width) {
             case1.setWidth(width);
             section1.setWidth(width);
+            $("#display-width").text(width);
             scene.redraw();
         }
     });
@@ -40,6 +39,7 @@ $(document).ready(function() {
         if (min_height <= height && height <= max_height) {
             case1.setHeight(height);
             section1.setHeight(height - 2 * t - th);
+            $("#display-height").text(height);
             scene.redraw();
         }
     });
@@ -51,6 +51,7 @@ $(document).ready(function() {
         if (min_depth <= depth & depth <= max_depth) {
             case1.setDepth(depth);
             section1.setDepth(depth - t - 2 * th);
+            $("#display-depth").text(depth);
             scene.redraw();
         }
     });
