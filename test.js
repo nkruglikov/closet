@@ -26,8 +26,8 @@ $(document).ready(function() {
         var max_width = Number($(this).attr("max"));
         var min_width = Number($(this).attr("min"));
         if (min_width <= width && width <= max_width) {
-            case1.setWidth(width);
-            section1.setWidth(width);
+            case1.width = width;
+            section1.width = width;
             $("#display-width").text(width);
             scene.redraw();
         }
@@ -38,8 +38,8 @@ $(document).ready(function() {
         var max_height = Number($(this).attr("max"));
         var min_height = Number($(this).attr("min"));
         if (min_height <= height && height <= max_height) {
-            case1.setHeight(height);
-            section1.setHeight(height - 2 * t - th);
+            case1.height = height;
+            section1.height = height - 2 * t - th;
             $("#display-height").text(height);
             scene.redraw();
         }
@@ -50,8 +50,8 @@ $(document).ready(function() {
         var max_depth = Number($(this).attr("max"));
         var min_depth = Number($(this).attr("min"));
         if (min_depth <= depth & depth <= max_depth) {
-            case1.setDepth(depth);
-            section1.setDepth(depth - t - 2 * th);
+            case1.depth = depth;
+            section1.depth = depth - t - 2 * th;
             $("#display-depth").text(depth);
             scene.redraw();
         }

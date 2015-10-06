@@ -33,45 +33,63 @@ function Case(point, width, height, depth,
                    this.topLog, this.bottomLog, this.thresoldLog];
 }
 
-Case.prototype.setWidth = function (width) {
-    var x = this.position.x, y = this.position.y, z = this.position.z;
-    var t = Log.thickness;
-    this.backLog.setWidth(width + 2 * t);
-    this.rightLog.setX(x + width + t);
-    this.topLog.setWidth(width);
-    this.bottomLog.setWidth(width);
-    this.thresoldLog.setWidth(width);
-}
+Object.defineProperty(Case.prototype, "width", {
+    set: function (width) {
+        var x = this.position.x, y = this.position.y, z = this.position.z;
+        var t = Log.thickness;
+        this.backLog.width = width + 2 * t;
+        this.rightLog.x = x + width + t;
+        this.topLog.width = width;
+        this.bottomLog.width = width;
+        this.thresoldLog.width = width;
+    },
 
-Case.prototype.setHeight = function (height) {
-    var x = this.position.x, y = this.position.y, z = this.position.z;
-    var t = Log.thickness;
-    this.backLog.setHeight(height);
-    this.leftLog.setHeight(height);
-    this.rightLog.setHeight(height);
-    this.topLog.setY(y + height - t);
-}
+    get: function () {
+        return this.backLog.width;
 
-Case.prototype.setDepth = function (depth) {
-    var x = this.position.x, y = this.position.y, z = this.position.z;
-    var t = Log.thickness;
-    this.backLog.setZ(z + depth);
-    this.leftLog.setDepth(depth);
-    this.rightLog.setDepth(depth);
-    this.topLog.setDepth(depth);
-    this.bottomLog.setDepth(depth);
-}
+    }
+});
 
+Object.defineProperty(Case.prototype, "height", {
+    set: function (height) {
+        var x = this.position.x, y = this.position.y, z = this.position.z;
+        var t = Log.thickness;
+        this.backLog.height = height;
+        this.leftLog.height = height;
+        this.rightLog.height = height;
+        this.topLog.y = y + height - t;
+    },
+
+    get: function() {
+        return this.rightLog.height;
+    }
+});
+
+Object.defineProperty(Case.prototype, "depth", {
+    set: function (depth) {
+        var x = this.position.x, y = this.position.y, z = this.position.z;
+        var t = Log.thickness;
+        this.backLog.z = z + depth;
+        this.leftLog.depth = depth;
+        this.rightLog.depth = depth;
+        this.topLog.depth = depth;
+        this.bottomLog.depth = depth;
+    },
+
+    get: function () {
+        return this.topLog.depth + Log.thickness;
+    }
+});
 
 Section.prototype = new Model();
 Section.prototype.constructor = Section;
 function Section(point, width, height, depth,
         color, textureXY, textureXZ, textureYZ) {
     this.position = point;
-    this.width = width;
-    this.height = height;
+    this._width = width;
+    this._height = height;
+    this._depth = depth;
     this.drawers_height = 0;
-    this.depth = depth;
     this.color = color;
     this.textureXY = textureXY;
     this.textureXZ = textureXZ;
@@ -82,8 +100,8 @@ function Section(point, width, height, depth,
 
 Section.prototype.normalizeShelves = function() {
     for (var i = 0; i < this.shelves.length; i++)
-        this.shelves[i].setY(this.position.y + this.drawers_height +
-                (i + 1) * (this.height - this.drawers_height) / (this.shelves.length + 1));
+        this.shelves[i].y = this.position.y + this.drawers_height +
+                (i + 1) * (this.height - this.drawers_height) / (this.shelves.length + 1);
 }
 
 Section.prototype.addShelf = function() {
@@ -131,24 +149,42 @@ Section.prototype.removeDrawer = function() {
     this.normalizeShelves();
 }
 
-Section.prototype.setWidth = function (width) {
-    this.width = width;
-    for (var i = 0; i < this.shelves.length; i++)
-        this.shelves[i].setWidth(width);
-    for (var i = 0; i < this.drawers.length; i++)
-        this.drawers[i].setWidth(width);
-}
+Object.defineProperty(Section.prototype, "width", {
+    set: function (width) {
+        this._width = width;
+        for (var i = 0; i < this.shelves.length; i++)
+            this.shelves[i].width = width;
+        for (var i = 0; i < this.drawers.length; i++)
+            this.drawers[i].width = width;
+    },
 
-Section.prototype.setHeight = function (height) {
-    this.height = height;
-    this.normalizeShelves();
-}
+    get: function () {
+        return this._width;
+    }
+});
 
-Section.prototype.setDepth = function (depth) {
-    this.depth = depth;
-    for (var i = 0; i < this.shelves.length; i++)
-        this.shelves[i].setDepth(depth);
-}
+Object.defineProperty(Section.prototype, "height", {
+    set: function (height) {
+        this._height = height;
+        this.normalizeShelves();
+    },
+
+    get: function () {
+        return this._height;
+    }
+});
+
+Object.defineProperty(Section.prototype, "depth", {
+    set: function (depth) {
+        this._depth = depth;
+        for (var i = 0; i < this.shelves.length; i++)
+            this.shelves[i].depth = depth;
+    },
+
+    get: function () {
+        return this._depth;
+    }
+});
 
 Drawer.prototype = new Model();
 Drawer.prototype.constructor = Drawer;
@@ -175,8 +211,14 @@ function Drawer(point, width, depth,
 Drawer.height = 20;
 Drawer.gap = 5;
 
-Drawer.prototype.setWidth = function (width) {
-    this.frontLog.setWidth(width);
-    this.backLog.setWidth(width);
-    this.rightLog.setX(this.leftLog.polygonYZ.pointA.x + width - Log.thickness);
-}
+Object.defineProperty(Drawer.prototype, "width", {
+    set: function (width) {
+        this.frontLog.width = width;
+        this.backLog.width = width;
+        this.rightLog.x = this.leftLog.x + width - Log.thickness;
+    },
+
+    get: function () {
+        return rightLog.x - leftLog.x + Log.thickness;
+    }
+});

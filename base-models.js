@@ -19,45 +19,83 @@ Block.prototype.init = function (point, width, height, depth, color) {
     this.models = [this.polygonXY, this.polygonXZ, this.polygonYZ];
 }
 
-Block.prototype.setWidth = function (width) {
-    this.polygonXY.pointB.x = this.polygonXY.pointA.x + width;
-    this.polygonXZ.pointB.x = this.polygonXZ.pointA.x + width;
-    this.polygonYZ.pointA.x = this.polygonYZ.pointB.x = this.polygonXY.pointB.x;
-}
+Object.defineProperty(Block.prototype, "width", {
+    set: function (width) {
+        ( this.polygonXY.pointB.x
+        = this.polygonXZ.pointB.x
+        = this.polygonYZ.pointA.x = this.polygonYZ.pointB.x
+        = this.polygonXY.pointA.x + width);
+    },
 
-Block.prototype.setX = function (x) {
-    var width = this.polygonXY.pointB.x - this.polygonXY.pointA.x;
-    this.polygonXY.pointA.x = x;
-    this.polygonXZ.pointA.x = x;
-    this.setWidth(width);
-}
+    get: function () {
+        return this.polygonXY.pointB.x - this.polygonXY.pointA.x;
 
-Block.prototype.setHeight = function (height) {
-    ( this.polygonXY.pointB.y
-    = this.polygonXZ.pointA.y = this.polygonXZ.pointB.y
-    = this.polygonYZ.pointB.y
-    = this.polygonXY.pointA.y + height);
-}
+    }
+});
 
-Block.prototype.setY = function (y) {
-    var height = this.polygonXY.pointB.y - this.polygonXY.pointA.y;
-    this.polygonXY.pointA.y = y;
-    this.polygonYZ.pointA.y = y;
-    this.setHeight(height);
-}
+Object.defineProperty(Block.prototype, "height", {
+    set: function (height) {
+        ( this.polygonXY.pointB.y
+        = this.polygonXZ.pointA.y = this.polygonXZ.pointB.y
+        = this.polygonYZ.pointB.y
+        = this.polygonXY.pointA.y + height);
+    },
 
-Block.prototype.setDepth = function (depth) {
-    ( this.polygonXZ.pointB.z
-    = this.polygonYZ.pointB.z
-    = this.polygonXZ.pointA.z + depth);
-}
+    get: function () {
+        return this.polygonXY.pointB.y - this.polygonXY.pointA.y;
+    }
+});
 
-Block.prototype.setZ = function (z) {
-    var depth = this.polygonXZ.pointB.z - this.polygonXZ.pointA.z;
-    ( this.polygonXY.pointA.z = this.polygonXY.pointB.z
-    = this.polygonXZ.pointA.z = this.polygonYZ.pointA.z = z);
-    this.setDepth(depth);
-}
+Object.defineProperty(Block.prototype, "depth", {
+    set: function (depth) {
+        ( this.polygonXZ.pointB.z
+        = this.polygonYZ.pointB.z
+        = this.polygonXZ.pointA.z + depth);
+    },
+
+    get: function () {
+        return this.polygonXZ.pointB.z - this.polygonXZ.pointA.z;
+    }
+});
+
+Object.defineProperty(Block.prototype, "x", {
+    set: function (x) {
+        var width = this.polygonXY.pointB.x - this.polygonXY.pointA.x;
+        this.polygonXY.pointA.x = x;
+        this.polygonXZ.pointA.x = x;
+        this.width = width;
+    },
+
+    get: function () {
+        return this.polygonXY.pointA.x;
+    }
+});
+
+Object.defineProperty(Block.prototype, "y", {
+    set: function (y) {
+        var height = this.polygonXY.pointB.y - this.polygonXY.pointA.y;
+        this.polygonXY.pointA.y = y;
+        this.polygonYZ.pointA.y = y;
+        this.height = height;
+    },
+
+    get: function () {
+        return this.polygonXY.pointA.y;
+    }
+});
+
+Object.defineProperty(Block.prototype, "z", {
+    set: function (z) {
+        var depth = this.polygonXZ.pointB.z - this.polygonXZ.pointA.z;
+        ( this.polygonXY.pointA.z = this.polygonXY.pointB.z
+        = this.polygonXZ.pointA.z = this.polygonYZ.pointA.z = z);
+        this.depth = depth;
+    },
+
+    get: function () {
+        return this.polygonXZ.pointA.z;
+    }
+});
 
 Log.prototype = new Block();
 Log.prototype.constructor = Log;
