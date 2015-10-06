@@ -166,6 +166,7 @@ function Section(point, width, height, depth,
     this.position = point;
     this.width = width;
     this.height = height;
+    this.drawers_height = 0;
     this.depth = depth;
     this.color = color;
     this.textureXY = textureXY;
@@ -177,8 +178,8 @@ function Section(point, width, height, depth,
 
 Section.prototype.normalizeShelves = function() {
     for (var i = 0; i < this.shelves.length; i++)
-        this.shelves[i].setY(this.position.y +
-                (i + 1) * this.height / (this.shelves.length + 1));
+        this.shelves[i].setY(this.position.y + this.drawers_height +
+                (i + 1) * (this.height - this.drawers_height) / (this.shelves.length + 1));
 }
 
 Section.prototype.addShelf = function() {
@@ -204,11 +205,13 @@ Section.prototype.removeShelf = function() {
 Section.prototype.addDrawer = function() {
     var dr_point = new Point(this.position.x,
             this.position.y + (this.drawers.length) * Drawer.height
-            + (this.drawers.length + 1) * Drawer.gap, this.position.z);
+               + (this.drawers.length + 1) * Drawer.gap, this.position.z);
     var drawer = new Drawer(dr_point, this.width, this.depth,
             this.color, this.textureXY, this.textureYZ);
     this.models.push(drawer);
     this.drawers.push(drawer);
+    this.drawers_height += Drawer.height + Drawer.gap;
+    this.normalizeShelves();
 }
 
 Section.prototype.setWidth = function (width) {
