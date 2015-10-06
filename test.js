@@ -16,9 +16,6 @@ $(document).ready(function() {
             clr, txrXY, txrXZ, txrYZ);
     section1.addShelf();
     section1.addShelf();
-    section1.addDrawer();
-    section1.addDrawer();
-    section1.addDrawer();
     section1.removeDrawer();
     scene.models.push(section1);
     scene.redraw();
@@ -67,6 +64,16 @@ $(document).ready(function() {
 
     $("#control-remove-shelf").click(function() {
         section1.removeShelf();
+        scene.redraw();
+    });
+
+    $("#control-add-drawer").click(function() {
+        section1.addDrawer();
+        scene.redraw();
+    });
+
+    $("#control-remove-drawer").click(function() {
+        section1.removeDrawer();
         scene.redraw();
     });
 });
