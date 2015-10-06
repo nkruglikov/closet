@@ -16,6 +16,9 @@ $(document).ready(function() {
             clr, txrXY, txrXZ, txrYZ);
     section1.addShelf();
     section1.addShelf();
+    section1.addDrawer();
+    section1.addDrawer();
+    section1.addDrawer();
     scene.models.push(section1);
     scene.redraw();
 

@@ -103,10 +103,9 @@ function Case(point, width, height, depth,
     textureXZ = textureXZ || color;
     textureYZ = textureYZ || color;
     var x = point.x, y = point.y, z = point.z, t = Log.thickness;
-    var thresoldHeight = th = 5;
+    var th = this.thresoldHeight = 5;
 
     this.position = point;
-    this.thresoldHeight = th;
 
     this.backLog     = new LogXY(new Point(x, y, z + depth),
                                  width + 2*t, height,
@@ -202,6 +201,16 @@ Section.prototype.removeShelf = function() {
     }
 }
 
+Section.prototype.addDrawer = function() {
+    var dr_point = new Point(this.position.x,
+            this.position.y + (this.drawers.length) * Drawer.height
+            + (this.drawers.length + 1) * Drawer.gap, this.position.z);
+    var drawer = new Drawer(dr_point, this.width, this.depth,
+            this.color, this.textureXY, this.textureYZ);
+    this.models.push(drawer);
+    this.drawers.push(drawer);
+}
+
 Section.prototype.setWidth = function (width) {
     this.width = width;
     for (var i = 0; i < this.shelves.length; i++)
@@ -218,3 +227,28 @@ Section.prototype.setDepth = function (depth) {
     for (var i = 0; i < this.shelves.length; i++)
         this.shelves[i].setDepth(depth);
 }
+
+Drawer.prototype = new Model();
+Drawer.prototype.constructor = Drawer;
+function Drawer(point, width, depth,
+        color, textureXY, textureYZ) {
+    this.backLog = new LogXY(new Point(point.x, point.y,
+                point.z + depth),
+            width, Drawer.height,
+            color, textureXY);
+    this.frontLog = new LogXY(new Point(point.x, point.y,
+                point.z),
+            width, Drawer.height,
+            color, textureXY);
+    this.leftLog = new LogYZ(new Point(point.x, point.y,
+                point.z + Log.thickness),
+             Drawer.height, depth - 1 * Log.thickness,
+            color, textureYZ);
+    this.rightLog = new LogYZ(new Point(point.x + width - Log.thickness,
+                point.y, point.z + Log.thickness),
+             Drawer.height, depth - 1 * Log.thickness,
+            color, textureYZ);
+    this.models = [this.backLog, this.frontLog, this.leftLog, this.rightLog];
+}
+Drawer.height = 20;
+Drawer.gap = 5;
