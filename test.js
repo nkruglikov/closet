@@ -19,6 +19,7 @@ $(document).ready(function() {
     section1.addDrawer();
     section1.addDrawer();
     section1.addDrawer();
+    section1.removeDrawer();
     scene.models.push(section1);
     scene.redraw();
 

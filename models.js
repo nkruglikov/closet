@@ -193,16 +193,18 @@ Section.prototype.addShelf = function() {
 }
 
 Section.prototype.removeShelf = function() {
-    if (this.shelves.length > 0) {
-        var shelf = this.shelves.pop();
-        var i = this.models.indexOf(shelf), l = this.models.length;
-        this.models = this.models.slice(0, i).concat(
-                this.models.slice(i + 1, l));
-        this.normalizeShelves();
-    }
+    if (this.shelves.length == 0)
+        return
+    var shelf = this.shelves.pop();
+    var i = this.models.indexOf(shelf), l = this.models.length;
+    this.models = this.models.slice(0, i).concat(
+            this.models.slice(i + 1, l));
+    this.normalizeShelves();
 }
 
 Section.prototype.addDrawer = function() {
+    if (this.drawers.length >= 3)
+        return;
     var dr_point = new Point(this.position.x,
             this.position.y + (this.drawers.length) * Drawer.height
                + (this.drawers.length + 1) * Drawer.gap, this.position.z);
@@ -211,6 +213,17 @@ Section.prototype.addDrawer = function() {
     this.models.push(drawer);
     this.drawers.push(drawer);
     this.drawers_height += Drawer.height + Drawer.gap;
+    this.normalizeShelves();
+}
+
+Section.prototype.removeDrawer = function() {
+    if (this.drawers.length == 0)
+        return;
+    var drawer = this.drawers.pop();
+    var i = this.models.indexOf(drawer), l = this.models.length;
+    this.models = this.models.slice(0, i).concat(
+            this.models.slice(i + 1, l));
+    this.drawers_height -= Drawer.height + Drawer.gap;
     this.normalizeShelves();
 }
 
