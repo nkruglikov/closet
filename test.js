@@ -11,13 +11,21 @@ $(document).ready(function() {
     scene.redraw();
 
     var t = Log.thickness, th = case1.thresoldHeight;
-    var section1 = new Section(new Point(10 + t, 5 + t + th, 5 + 2 * th),
+//  var section1 = new Section(new Point(10 + t, 5 + t + th, 5 + 2 * th),
+//          300, 270 - 2 * t - th, 60 - t - 2 * th,
+//          clr, txrXY, txrXZ, txrYZ);
+//  section1.addShelf();
+//  section1.addShelf();
+//  section1.removeDrawer();
+    var sections = new Sections(new Point(10 + t, 5 + t + th, 5 + 2 * th),
             300, 270 - 2 * t - th, 60 - t - 2 * th,
             clr, txrXY, txrXZ, txrYZ);
-    section1.addShelf();
-    section1.addShelf();
-    section1.removeDrawer();
-    scene.models.push(section1);
+    sections.addSection();
+    sections.models[0].addShelf();
+    sections.models[2].addDrawer();
+    sections.models[2].addDrawer();
+    sections.models[2].addShelf();
+    scene.models.push(sections);
     scene.redraw();
 
 

@@ -81,6 +81,84 @@ Object.defineProperty(Case.prototype, "depth", {
     }
 });
 
+Sections.prototype = new Model();
+Sections.prototype.constructor = Sections;
+function Sections(point, width, height, depth,
+        color, textureXY, textureXZ, textureYZ) {
+        this.position = point;
+        this._width = width;
+        this._height = height;
+        this._depth = depth;
+        this.drawers_height = 0;
+        this.color = color;
+        this.textureXY = textureXY;
+        this.textureXZ = textureXZ;
+        this.textureYZ = textureYZ;
+        var section = new Section(new Point(point.x, point.y, point.z),
+            width, height, depth,
+            color, textureXY, textureXZ, textureYZ);
+        this.models = [section]; // stores both sections and separators
+}
+
+Sections.prototype.addSection = function () {
+    var len = this.models.length;
+    this.models[len - 1].width = Math.floor(this.models[len - 1].width / 2);
+    var lastw = this.models[len - 1].width;
+    var separator = new LogYZ(
+        new Point(this.position.x + this.width - lastw,
+            this.position.y, this.position.z),
+        this.height, this.depth,
+        this.color, this.textureYZ);
+    var section = new Section(
+        new Point(this.position.x + this.width - lastw + Log.thickness,
+            this.position.y, this.position.z),
+        lastw - Log.thickness, this.height, this.depth,
+        this.color, this.textureXY, this.textureXZ, this.textureYZ);
+    this.models.push(separator, section);
+}
+
+Sections.prototype.removeSection = function () {
+    if (this.models.length > 1) {
+        this.models.pop();
+        this.models.pop();
+    }
+}
+
+Object.defineProperty(Sections.prototype, "width", {
+    set: function (width) {
+        this._width = width;
+        for (var i = 0; i < this.models.length; i++)
+            this.models[i].width = width;
+    },
+
+    get: function () {
+        return this._width;
+    }
+});
+
+Object.defineProperty(Sections.prototype, "height", {
+    set: function (height) {
+        this._height = height;
+    },
+
+    get: function () {
+        return this._height;
+    }
+});
+
+Object.defineProperty(Sections.prototype, "depth", {
+    set: function (depth) {
+        this._depth = depth;
+        for (var i = 0; i < this.models.length; i++)
+            this.models[i].depth = depth;
+    },
+
+    get: function () {
+        return this._depth;
+    }
+});
+
+
 Section.prototype = new Model();
 Section.prototype.constructor = Section;
 function Section(point, width, height, depth,
